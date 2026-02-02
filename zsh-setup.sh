@@ -185,9 +185,9 @@ if [[ ! -f ~/.p10k.zsh ]]; then
     fi
 fi
 
-function set_10k_theme() {
-    rm -f ~/.p10k.zsh
-    echo "✅ Powerlevel10k theme reset. Restart Zsh to configure again."
+#function set_10k_theme() {
+#    rm -f ~/.p10k.zsh
+#   echo "✅ Powerlevel10k theme reset. Restart Zsh to configure again."
 }
 
 # ---------------------
