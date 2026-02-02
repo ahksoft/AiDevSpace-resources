@@ -188,7 +188,7 @@ fi
 #function set_10k_theme() {
 #    rm -f ~/.p10k.zsh
 #   echo "✅ Powerlevel10k theme reset. Restart Zsh to configure again."
-}
+#}
 
 # ---------------------
 # Completion
@@ -220,6 +220,8 @@ add-zsh-hook preexec zsh_suggest_all_commands
 function command_not_found_handler() {
     echo "[INFO] Command '$1' not found. Install manually."
 }
+source ~/.bashrc
+
 EOF
 
 # ---------------------------
