@@ -228,8 +228,8 @@ EOF
 # ---------------------------
 
 echo "✅ Zsh installation complete!"
-echo "💡 First Zsh launch will run Powerlevel10k wizard."
-echo "💡 The terminal emulator will handle shell switching."
+#echo "💡 First Zsh launch will run Powerlevel10k wizard."
+#echo "💡 The terminal emulator will handle shell switching."
 
 # Exit with success code
-exit 0
+#exit 0
