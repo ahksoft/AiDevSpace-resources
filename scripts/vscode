@@ -1,0 +1,136 @@
+#!/bin/bash
+
+# VSCode + VNC + Openbox Starter Script
+
+# Configuration
+VNC_DISPLAY="${VNC_DISPLAY:-:1}"
+VNC_RESOLUTION="${VNC_RESOLUTION:-720x1280}"
+VNC_DEPTH="${VNC_DEPTH:-24}"
+VNC_PORT="${VNC_PORT:-5905}"
+
+# Strip : from display number for grep commands
+VNC_NUM="${VNC_DISPLAY#:}"
+
+# Colors
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+RED='\033[0;31m'
+BLUE='\033[0;34m'
+NC='\033[0m'
+
+echo -e "${BLUE}=================================${NC}"
+echo -e "${BLUE}  VSCode + VNC + Openbox Starter${NC}"
+echo -e "${BLUE}=================================${NC}"
+echo ""
+
+# Function to cleanup
+cleanup() {
+    echo ""
+    echo -e "${YELLOW}Shutting down...${NC}"
+    tigervncserver -kill "$VNC_DISPLAY" 2>/dev/null || true
+    exit 0
+}
+
+# Set trap for cleanup
+trap cleanup INT TERM EXIT
+
+# Check if VNC server is already running
+if tigervncserver -list 2>/dev/null | grep -q "^$VNC_NUM"; then
+    echo -e "${YELLOW}VNC server already running on display $VNC_DISPLAY${NC}"
+    echo -e "${YELLOW}Stopping existing server...${NC}"
+    tigervncserver -kill "$VNC_DISPLAY" 2>/dev/null || true
+    sleep 2
+fi
+
+# Clean up any stale lock files
+rm -f "/tmp/.X${VNC_NUM}-lock" "/tmp/.X11-unix/X${VNC_NUM}" 2>/dev/null || true
+
+# Ensure xstartup script exists
+mkdir -p ~/.config/tigervnc
+if [ ! -f ~/.config/tigervnc/xstartup ]; then
+cat > ~/.config/tigervnc/xstartup << 'XEOF'
+#!/bin/sh
+unset SESSION_MANAGER
+unset DBUS_SESSION_BUS_ADDRESS
+exec openbox
+XEOF
+chmod +x ~/.config/tigervnc/xstartup
+fi
+
+echo -e "${GREEN}Starting VNC server...${NC}"
+echo "  Display: $VNC_DISPLAY"
+echo "  Port: $VNC_PORT"
+echo "  Resolution: $VNC_RESOLUTION"
+echo ""
+
+# Start VNC server
+tigervncserver -geometry "$VNC_RESOLUTION" \
+               -depth "$VNC_DEPTH" \
+               -rfbport "$VNC_PORT" \
+               "$VNC_DISPLAY" 2>&1 | head -5
+
+# Check if VNC started successfully
+sleep 3
+if ! tigervncserver -list 2>/dev/null | grep -q "^$VNC_NUM"; then
+    echo -e "${RED}ERROR: VNC server failed to start!${NC}"
+    echo -e "${YELLOW}Check logs: ~/.config/tigervnc/localhost.localdomain:$VNC_DISPLAY.log${NC}"
+    exit 1
+fi
+
+echo -e "${GREEN}VNC server started!${NC}"
+echo ""
+echo "========================================"
+echo "Connect to VNC:"
+echo "  Host: <your-host>:$VNC_PORT"
+echo "  Password: (set during setup - default: 123456)"
+echo ""
+echo "To stop: Press Ctrl+C"
+echo "========================================"
+echo ""
+
+# Set background color
+echo -e "${GREEN}Setting desktop background...${NC}"
+DISPLAY="$VNC_DISPLAY" xsetroot -solid "#2e3440" 2>/dev/null || true
+
+# Start VSCode
+echo -e "${GREEN}Starting VSCode...${NC}"
+DISPLAY="$VNC_DISPLAY" code --no-sandbox --user-data-dir=$HOME/.vscode-vnc &
+
+# Give VSCode time to initialize
+sleep 5
+
+# Maximize VSCode window using xdotool if available
+if command -v xdotool &> /dev/null; then
+    echo -e "${GREEN}Maximizing VSCode window...${NC}"
+    sleep 2
+    # Try to find and maximize the VSCode window
+    DISPLAY="$VNC_DISPLAY" xdotool search --class "Code" windowactivate windowmaximize 2>/dev/null || true
+    DISPLAY="$VNC_DISPLAY" xdotool search --class "code" windowactivate windowmaximize 2>/dev/null || true
+fi
+
+# Verify everything is running
+if ps aux | grep -v grep | grep -q "openbox"; then
+    echo -e "${GREEN}✓ Openbox is running${NC}"
+else
+    echo -e "${YELLOW}! Warning: Openbox not detected${NC}"
+fi
+
+if ps aux | grep -v grep | grep -q "code.*user-data-dir"; then
+    echo -e "${GREEN}✓ VSCode is running${NC}"
+else
+    echo -e "${YELLOW}! Warning: VSCode not detected${NC}"
+fi
+
+echo ""
+echo -e "${GREEN}✓ Setup complete!${NC}"
+echo -e "${YELLOW}Press Ctrl+C to stop the server${NC}"
+echo ""
+
+# Keep script running and monitor VNC
+while true; do
+    sleep 3
+    if ! tigervncserver -list 2>/dev/null | grep -q "^$VNC_NUM"; then
+        echo -e "${YELLOW}VNC server has stopped${NC}"
+        break
+    fi
+done
