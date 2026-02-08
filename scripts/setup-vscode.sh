@@ -427,8 +427,9 @@ if curl -f -s https://raw.githubusercontent.com/ahksoft/AiDevSpace-resources/ref
     print_warning "Failed to download additional vscode script (continuing without it)"
 fi
 
-if  curl -f -s https://raw.githubusercontent.com/ahksoft/AiDevSpacresourcese/refs/heads/main/scripts/settings.json -o ~/settings.json; then
-    mv ~/settings.json /.vscode-vnc/User/settings.json
+if  curl -f -s https://raw.githubusercontent.com/ahksoft/AiDevSpace-resources/refs/heads/main/scripts/settings.json -o ~/settings.json; then
+    mkdir ~/.vscode-vnc/User/
+    mv ~/settings.json ~/.vscode-vnc/User/settings.json
     print_status "Additional vscode settings installed"
 else
     print_warning "Failed to download additional vscode settings (continuing without it)"
@@ -465,3 +466,4 @@ echo ""
 echo "To customize settings, edit:"
 echo "  ~/.config/tigervnc/xstartup"
 echo ""
+vscode
