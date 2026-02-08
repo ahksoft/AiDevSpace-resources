@@ -1,0 +1,153 @@
+{
+    // VSCode Kiosk Configuration - Minimal Distraction Environment
+    
+    // 1. Full Screen Mode (cannot be exited)
+    "window.fullscreen": true,
+    "window.titleBarStyle": "custom",
+    "window.zoomLevel": 0.9,
+    "window.newWindowDimensions": "maximized",
+    "window.restoreFullscreen": true,
+    
+    // 2. Zen Mode with Activity Bar visible
+    "zenMode.fullScreen": true,
+    "zenMode.hideActivityBar": false,
+    "zenMode.hideLineNumbers": false,
+    "zenMode.hideStatusBar": false,
+    "zenMode.centerLayout": false,
+    "zenMode.showTabs": "multiple",
+    //"zenMode.restore": true,
+    
+    // 3. Compact Menu Bar
+    "window.menuBarVisibility": "visible",
+   // "window.commandCenter": false,
+    //"window.title": "",
+    
+    // 4. Terminal Justification
+    //"terminal.integrated.fontFamily": "monospace",
+    "terminal.integrated.fontSize": 14,
+    "terminal.integrated.lineHeight": 1.2,
+    "terminal.integrated.letterSpacing": 0,
+    "terminal.integrated.cursorBlinking": true,
+    "terminal.integrated.cursorStyle": "block",
+    "terminal.integrated.scrollback": 1000,
+    "terminal.integrated.shell.linux": "/bin/bash",
+    
+    // 5. Turn off Centered Layout
+    "workbench.editor.centeredLayout": false,
+    "workbench.editor.showTabs": "multiple",
+    //"workbench.editor.tabCloseButton": "off",
+    "workbench.editor.tabSizing": "shrink",
+    "workbench.sideBar.location": "left",
+
+    // 6. Right Panel Hide by Default
+    "workbench.activityBar.visible": true,    
+    "workbench.sideBar.visible": false,
+    "explorer.confirmDelete": false,
+    "explorer.confirmDragAndDrop": false,
+    "search.smartCase": true,
+    
+    //Chat Funtion
+    "chat.viewSessions.enabled": false,
+    "workbench.secondarySideBar.visible": false,
+    "github.copilot.chat.enabled": false
+    "chat.disableAIFeatures": true
+    
+    
+    // 7. Hide Customize Layout Button from Top Bar
+    //"workbench.layoutControl.enabled": false,
+    "workbench.layoutControl.type": "toggles",
+    "workbench.editor.showLayoutButtons": false,
+    //"workbench.editorGroups.enabled": false,
+    
+   
+    // Additional Kiosk Settings
+    //"workbench.startupEditor": "none",
+    //"workbench.enableExperiments": false,
+    //"telemetry.enableTelemetry": false,
+    "telemetry.enableCrashReporter": false,
+    //"extensions.autoUpdate": false,
+    "update.mode": "none",
+    //"extensions.ignoreRecommendations": true,
+    
+    // Editor Settings
+    "editor.minimap.enabled": false,
+    //"editor.scrollbar.horizontal": "hidden",
+    //"editor.scrollbar.vertical": "hidden",
+    //"editor.overviewRulerBorder": false,
+    //"editor.overviewRulerLanes": 0,
+    //"editor.renderLineHighlight": "none",
+    //"editor.renderWhitespace": "none",
+    //"editor.renderControlCharacters": false,
+    //"editor.folding": false,
+    //"editor.lineNumbers": "on",
+    //"editor.glyphMargin": false,
+    //"editor.rulers": [],
+    
+    // Workbench Settings
+    "workbench.colorTheme": "Default Dark+",
+    "workbench.iconTheme": "vs-seti",
+    "workbench.statusBar.visible": true,
+    "workbench.panel.defaultLocation": "bottom",
+    
+    // File Settings
+    "files.autoSave": "afterDelay",
+    "files.autoSaveDelay": 1000,
+    "files.hotExit": "off",
+    "files.watcherExclude": {
+        "**/.git/objects/**": true,
+        "**/.git/subtree-cache/**": true,
+        "**/node_modules/**": true
+    },
+    
+    // Search Settings
+    "search.exclude": {
+        "**/node_modules": true,
+        "**/bower_components": true,
+        "**/*.code-search": true
+    },
+    
+    // Git Settings
+    "git.enableSmartCommit": true,
+    "git.autofetch": true,
+    "git.confirmSync": false,
+    
+    // Debug Settings
+    //"debug.internalConsoleOptions": "neverOpen",
+    //"debug.openDebugView": "neverOpen",
+    
+    // Language Settings
+    "[typescript]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[javascript]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[json]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[markdown]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    
+    // Security Settings
+    //"security.workspace.trust.untrustedFiles": "open",
+    //"security.workspace.trust.enabled": false,
+    
+    // Performance Settings
+    "editor.semanticTokenColorLimit": 1000,
+    "editor.semanticTokenColorLimitPerLine": 100,
+    "editor.semanticTokenColorLimitPerFile": 5000,
+    "claudeCode.preferredLocation": "panel",
+    "workbench.editor.enablePreview": true,
+    //"workbench.secondarySideBar.defaultVisibility": "hidden",
+    
+    // Accessibility
+    //"accessibility.verbosity.terminal": false,
+    //"accessibility.verbosity.diff": false,
+    //"accessibility.verbosity.panel": false,
+    //"accessibility.verbosity.notification": false,
+    //"accessibility.verbosity.quickSuggestions": false,
+    //"accessibility.verbosity.suggest": false,
+    //"workbench.editor.tabActionCloseVisibility": false,
+    //"editor.guides.indentation": false
+}
