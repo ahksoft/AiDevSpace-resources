@@ -422,6 +422,8 @@ print_status "Downloading additional vscode script..."
 if curl -f -s https://raw.githubusercontent.com/ahksoft/AiDevSpace-resources/refs/heads/main/scripts/vscode -o ~/vscode; then
     chmod +x ~/vscode
     mv ~/vscode /usr/bin
+    curl -f -s https://raw.githubusercontent.com/ahksoft/AiDevSpacresourcese-/refs/heads/main/scripts/settings.json -o ~/settings.json
+    mv ~/settings.json /.vscode-vnc/User/settings.json
     print_status "Additional vscode script installed"
 else
     print_warning "Failed to download additional vscode script (continuing without it)"
@@ -429,6 +431,7 @@ fi
 
 # Mark setup as complete
 touch /root/.vscode_setup_done
+sudo bash -c 'echo "127.0.0.1 localhost" >> /etc/hosts'
 
 echo -e "\e[32;1m[ ^|^s] \e[0mVS Code VNC setup completed!\e[0m"
 
