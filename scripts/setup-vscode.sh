@@ -466,4 +466,3 @@ echo ""
 echo "To customize settings, edit:"
 echo "  ~/.config/tigervnc/xstartup"
 echo ""
-vscode
