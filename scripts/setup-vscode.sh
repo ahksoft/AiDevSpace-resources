@@ -438,6 +438,7 @@ fi
 # Mark setup as complete
 touch /root/.vscode_setup_done
 sudo bash -c 'echo "127.0.0.1 localhost" >> /etc/hosts'
+rm /etc/apt/sources.list.d/vscode.sources
 
 echo -e "\e[32;1m[ ^|^s] \e[0mVS Code VNC setup completed!\e[0m"
 
