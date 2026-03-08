@@ -51,7 +51,7 @@ echo "Installing code-server settings..."
 EOF
 
 code serve-web  --host=0.0.0.0  --port=6862 --without-connection-token   "$@" 2>/dev/null &
-ping http://localhost:6862
+curl http://localhost:6862 | 2>/dev/null 
 
 # BUG FIX: create parent directory before writing the done marker,
 # and fix the broken heredoc syntax (EOF must be on its own line)
