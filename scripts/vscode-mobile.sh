@@ -45,9 +45,13 @@ exec code-server \
   --disable-file-downloads \
   --user-data-dir "$DATA_DIR" \
   --config "$CONFIG_DIR/config.yaml"
-EOF
+EOF 
+echo "setting permission"
+sleep 3
 chmod +x /bin/vsc
+sleep 4
 echo "code settings. Installing..."
+mkdir -p ~/.local/share/code-server/User/
 cat > ~/.local/share/code-server/User/settings.jsonand << EOF 
 {
   "chat.enabled": false,
@@ -66,4 +70,9 @@ cat > ~/.local/share/code-server/User/settings.jsonand << EOF
   "workbench.tips.enabled": false,
   "workbench.welcomePage.walkthroughs.openOnInstall": false
 }
+EOF
+echo "VSCode install complete ✅"
+sleep 3
+echo "Now Restart Your Application"
+cat > /root/AHK/done<< EOF install complete 
 EOF
