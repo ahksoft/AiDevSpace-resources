@@ -109,6 +109,16 @@ sleep 3
 echo "Setting Environment..."
 kill $SERVER_PID 2>/dev/null || true
 
+mkdir -p ~/.vscode/cli
+sleep 0.5
+cat > ~/.vscode/cli/product.json << 'EOF'
+{
+  "extensionsGallery": {
+    "serviceUrl": "https://open-vsx.org/vscode/gallery",
+    "itemUrl": "https://open-vsx.org/vscode/item"
+  }
+}
+EOF
 
 
 cat > /bin/code-server << 'EOF'
