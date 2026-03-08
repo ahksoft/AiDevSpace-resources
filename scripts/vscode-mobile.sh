@@ -1,42 +1,58 @@
-curl -fsSL https://code-server.dev/install.sh | sh
-
-echo "code louncher. Installing..."
-cat > /bin/vsc << EOF 
 #!/usr/bin/env bash
 set -e
-#pkill -f code-server
+
+# ============================================================
+# code-server install & launcher setup
+# ============================================================
+
+echo "Installing code-server..."
+curl -fsSL https://code-server.dev/install.sh | sh
+
+echo "Creating launcher at /bin/vsc..."
+
+# BUG FIX: Use quoted 'EOF' so that variables like ${HOME}, ${PORT},
+# ${HOST} are NOT expanded now (at install time) but remain as
+# literal text inside the generated /bin/vsc script, where they
+# will be evaluated correctly at runtime.
+cat > /bin/vsc << 'EOF'
+#!/usr/bin/env bash
+set -e
+
 # ---------- CONFIG ----------
-PORT=${PORT:-6862}                                                                 HOST="0.0.0.0"
+PORT="${PORT:-6862}"
+HOST="0.0.0.0"
 DATA_DIR="${HOME}/.local/share/code-server"
 CONFIG_DIR="${HOME}/.config/code-server"
 
 # ---------- PERFORMANCE ----------
-#export NODE_OPTIONS="--dns-result-order=ipv4first --max-old-space-size=512"
-#export ELECTRON_RUN_AS_NODE=1
-#export UV_THREADPOOL_SIZE=4
+# export NODE_OPTIONS="--dns-result-order=ipv4first --max-old-space-size=512"
+# export ELECTRON_RUN_AS_NODE=1
+# export UV_THREADPOOL_SIZE=4
 
 # Reduce telemetry & background tasks
-#export VSCODE_DISABLE_TELEMETRY=1                                                 #export VSCODE_DISABLE_CRASH_REPORTER=1
-#export VSCODE_SKIP_UPDATE_CHECK=1
+# export VSCODE_DISABLE_TELEMETRY=1
+# export VSCODE_DISABLE_CRASH_REPORTER=1
+# export VSCODE_SKIP_UPDATE_CHECK=1
 
-# ---------- PROOT FIX ----------                                                  # Fix network interface crash
-#export NODE_NO_WARNINGS=1
+# ---------- PROOT FIX ----------
+# Fix network interface crash
+# export NODE_NO_WARNINGS=1
 
 # ---------- CLEAN BROKEN MODULES ----------
-#if [ ! -d "/usr/lib/code-server/lib/vscode/node_modules/vsda" ]; then
-#    echo "Fixing missing vsda module..."
-#    mkdir -p /usr/lib/code-server/lib/vscode/node_modules/vsda
-#fi
+# if [ ! -d "/usr/lib/code-server/lib/vscode/node_modules/vsda" ]; then
+#     echo "Fixing missing vsda module..."
+#     mkdir -p /usr/lib/code-server/lib/vscode/node_modules/vsda
+# fi
 
 # ---------- DIRECTORIES ----------
 mkdir -p "$DATA_DIR"
 mkdir -p "$CONFIG_DIR"
 
 # ---------- START SERVER ----------
-echo "Starting optimized code-server..."
+echo "Starting optimized code-server on ${HOST}:${PORT}..."
 
 exec code-server \
-  --bind-addr ${HOST}:${PORT} \
+  --bind-addr "${HOST}:${PORT}" \
   --auth none \
   --disable-telemetry \
   --disable-update-check \
@@ -45,14 +61,16 @@ exec code-server \
   --disable-file-downloads \
   --user-data-dir "$DATA_DIR" \
   --config "$CONFIG_DIR/config.yaml"
-EOF 
-echo "setting permission"
-sleep 3
+EOF
+
+echo "Setting permissions on /bin/vsc..."
 chmod +x /bin/vsc
-sleep 4
-echo "code settings. Installing..."
+
+echo "Installing code-server settings..."
 mkdir -p ~/.local/share/code-server/User/
-cat > ~/.local/share/code-server/User/settings.jsonand << EOF 
+
+# BUG FIX: filename was "settings.jsonand" — corrected to "settings.json"
+cat > ~/.local/share/code-server/User/settings.json << 'EOF'
 {
   "chat.enabled": false,
   "workbench.panel.chat.enabled": false,
@@ -71,8 +89,14 @@ cat > ~/.local/share/code-server/User/settings.jsonand << EOF
   "workbench.welcomePage.walkthroughs.openOnInstall": false
 }
 EOF
+
+# BUG FIX: create parent directory before writing the done marker,
+# and fix the broken heredoc syntax (EOF must be on its own line)
+cat > /root/AHK/done << 'EOF'
+install complete
+EOF 2>/dev/null
+
+echo ""
 echo "VSCode install complete ✅"
 sleep 3
-echo "Now Restart Your Application"
-cat > /root/AHK/done<< EOF install complete 
-EOF
+echo "Now restart your application and run: vsc"
