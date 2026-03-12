@@ -102,7 +102,7 @@ mkdir -p ~/.local/share/fonts
 cd ~/.local/share/fonts
 
 FONT_INSTALL_SUCCESS=true
-for style in "Regular" "Bold" "Italic" "Bold Italic"; do
+for style in "Regular"; do
     fname="MesloLGS NF ${style}.ttf"
     url="https://github.com/romkatv/powerlevel10k-media/raw/master/${fname// /%20}"
     echo "📥 Downloading $fname"
