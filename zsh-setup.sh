@@ -224,11 +224,15 @@ source ~/.bashrc
 
 EOF
 
+echo "📥 Installing Terminal Theme"
+curl -fsSL https://raw.githubusercontent.com/ahksoft/AiDevSpace-resources/refs/heads/main/.p10k.zsh -o ~/.p10k.zsh || {
+    echo "[WARNING] Failed to download .aliases, continuing..."
+}
+
 # ---------------------------
 # Note: chsh not available in Android sandbox
 # Shell switching handled by terminal emulator
 # ---------------------------
-
 echo "✅ Zsh installation complete!"
 #echo "💡 First Zsh launch will run Powerlevel10k wizard."
 #echo "💡 The terminal emulator will handle shell switching."
