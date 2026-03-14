@@ -10,7 +10,8 @@ echo "Installing VSCode ⚙️..."
 
 curl -fsSL https://github.com/ahksoft/AiDevSpace-resources/releases/download/Vscode/code -o /bin/code
 chmod +x /bin/code
-
+apt update
+apt install -y libstdc++6
 
 echo "Creating launcher ..."
 sleep 3
