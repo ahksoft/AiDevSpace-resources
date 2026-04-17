@@ -28,6 +28,10 @@ add_user(){
 
     if id "ubuntu" &>/dev/null; then
         echo -e "${Y}User 'ubuntu' already exists, updating...${W}"
+        # Copy script to ubuntu's home so she can read it
+        cp "$SCRIPT_PATH" /home/ubuntu/install.sh
+        chown ubuntu:ubuntu /home/ubuntu/install.sh
+        chmod +x /home/ubuntu/install.sh
     else
         useradd -m -s /bin/bash ubuntu
     fi
