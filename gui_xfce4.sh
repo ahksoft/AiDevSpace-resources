@@ -28,10 +28,6 @@ add_user(){
 
     if id "ubuntu" &>/dev/null; then
         echo -e "${Y}User 'ubuntu' already exists, updating...${W}"
-        # Copy script to ubuntu's home so she can read it
-        cp "$SCRIPT_PATH" /home/ubuntu/install.sh
-        chown ubuntu:ubuntu /home/ubuntu/install.sh
-        chmod +x /home/ubuntu/install.sh
     else
         useradd -m -s /bin/bash ubuntu
     fi
@@ -64,7 +60,7 @@ install_desktop(){
         tigervnc-standalone-server pulseaudio python3-psutil
 
     # vncstart — runs as ubuntu, VNC on display :5 (port 5905)
-    sudo tee /usr/local/bin/vncstart > /dev/null <<'EOF'
+    sudo tee /bin/vncstart > /dev/null <<'EOF'
 #!/bin/bash
 CURRENT_HOST=$(hostname 2>/dev/null || echo "localhost")
 grep -q "$CURRENT_HOST" /etc/hosts 2>/dev/null || \
@@ -83,10 +79,12 @@ vncserver :5 -geometry 720x1280 -rfbport 5905 -xstartup /usr/bin/startxfce4
 USEREOF
 EOF
 
-    sudo tee /usr/local/bin/vncstop > /dev/null <<'EOF'
+    sudo tee /bin/vncstop > /dev/null <<'EOF'
 #!/bin/bash
+su - ubuntu <<'USEREOF'
 vncserver -kill :5
 rm -rf /tmp/.X5-lock /tmp/.X11-unix/X5
+USEREOF
 EOF
 
     sudo chmod +x /usr/local/bin/vncstart /usr/local/bin/vncstop
@@ -113,7 +111,7 @@ install_chromium(){
     mkdir -p ~/.local/share/applications
     cat > ~/.local/share/applications/chromium-vnc.desktop <<'EOF'
 [Desktop Entry]
-Name=Chromium (VNC)
+Name=Chromium
 Comment=Chromium Browser
 Exec=chromium --no-sandbox --disable-dev-shm-usage --disable-gpu %U
 Icon=chromium
@@ -124,7 +122,7 @@ MimeType=text/html;text/xml;application/xhtml+xml;
 EOF
 
     # Also create a wrapper so plain 'chromium' works without sandbox flags
-    sudo tee /usr/local/bin/chromium-safe > /dev/null <<'EOF'
+    sudo tee /bin/chromium > /dev/null <<'EOF'
 #!/bin/bash
 exec chromium --no-sandbox --disable-dev-shm-usage --disable-gpu "$@"
 EOF
