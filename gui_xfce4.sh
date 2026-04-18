@@ -96,41 +96,41 @@ chmod +x /bin/vncstop
 }
 
 # --------------------------
-# Install Chromium Browser  [UBUNTU PHASE]
+# Install Firefox-ESR  [UBUNTU PHASE]
 # --------------------------
-install_chromium(){
-    echo -e "${G}Installing Chromium Browser...${W}"
+install_firefox(){
+    echo -e "${G}Installing Firefox-ESR Browser...${W}"
 
-    sudo apt-get install -y chromium || \
-    sudo apt-get install -y chromium-browser || {
-        echo -e "${R}Package manager install failed, trying snap...${W}"
-        sudo apt-get install -y snapd && \
-        sudo snap install chromium || \
-        echo -e "${R}Chromium install failed — check internet connection.${W}"
+    sudo apt-get install -y firefox-esr || \
+    sudo apt-get install -y firefox-browser || {
+        echo -e "${R}Package manager install failed, trying to install from Debian Repo...${W}"
+        sudo curl -fsSL https://raw.githubusercontent.com/ahksoft/AiDevSpace-resources/refs/heads/main/scripts/debian-apt-sources | bash && \
+        sudo apt install firefox-esr gedit -y || \
+        echo -e "${R}Firefox-ESR install failed — check internet connection.${W}"
     }
 
     # Create a desktop launcher that works inside VNC (no sandbox in proot)
     mkdir -p ~/.local/share/applications
-    cat > ~/.local/share/applications/chromium-vnc.desktop <<'EOF'
+    cat > ~/.local/share/applications/firefox.desktop <<'EOF'
 [Desktop Entry]
-Name=Chromium
-Comment=Chromium Browser
-Exec=chromium --no-sandbox --disable-dev-shm-usage --disable-gpu %U
-Icon=chromium
+Name=Firefox
+Comment=Firefox Browser
+Exec=firefox --no-sandbox --disable-dev-shm-usage --disable-gpu %U
+Icon=firefox
 Terminal=false
 Type=Application
 Categories=Network;WebBrowser;
 MimeType=text/html;text/xml;application/xhtml+xml;
 EOF
 
-    # Also create a wrapper so plain 'chromium' works without sandbox flags
-    sudo tee /bin/chromium > /dev/null <<'EOF'
+    # Also create a wrapper so plain 'firefox' works without sandbox flags
+    sudo tee /bin/firefox-u > /dev/null <<'EOF'
 #!/bin/bash
-exec chromium --no-sandbox --disable-dev-shm-usage --disable-gpu "$@"
+exec firefox --no-sandbox --disable-dev-shm-usage --disable-gpu "$@"
 EOF
-    sudo chmod +x /usr/local/bin/chromium-safe
+    sudo chmod +x /usr/local/bin/firefox-u
 
-    echo -e "${G}Chromium installed. Use 'chromium-safe' from terminal or desktop icon.${W}"
+    echo -e "${G}Firefox installed. Use 'firefox-u' from terminal or desktop icon.${W}"
 }
 
 # --------------------------
@@ -196,7 +196,7 @@ if [[ "$1" == "--as-ubuntu" ]]; then
     # ── PHASE 2: running as ubuntu ──────────────────────────
     banner
     install_desktop
-    install_chromium
+    install_firefox
     install_theme
     sound_setup
     install_piapps
