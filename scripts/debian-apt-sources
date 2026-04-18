@@ -1,0 +1,16 @@
+#!/bin/bash
+# Remove broken repo first
+# sed -i '/ftp.debian.org/d' /etc/apt/sources.list
+
+# Create keyring folder
+mkdir -p /etc/apt/keyrings
+
+# Import correct Debian archive key
+curl -fsSL https://ftp-master.debian.org/keys/archive-key-12.asc \
+| gpg --dearmor -o /etc/apt/keyrings/debian.gpg
+
+# Add repo with signed-by
+echo "deb [signed-by=/etc/apt/keyrings/debian.gpg] http://ftp.debian.org/debian bookworm main contrib non-free non-free-firmware" > /etc/apt/sources.list.d/debian.list
+
+# Update
+apt update
