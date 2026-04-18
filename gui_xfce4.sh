@@ -78,6 +78,7 @@ sleep 1
 vncserver :5 -geometry 720x1280 -rfbport 5905 -xstartup /usr/bin/startxfce4
 USEREOF
 EOF
+chmod +x /bin/vncstart
 
     sudo tee /bin/vncstop > /dev/null <<'EOF'
 #!/bin/bash
@@ -86,6 +87,7 @@ vncserver -kill :5
 rm -rf /tmp/.X5-lock /tmp/.X11-unix/X5
 USEREOF
 EOF
+chmod +x /bin/vncstop
 
     sudo chmod +x /usr/local/bin/vncstart /usr/local/bin/vncstop
 
